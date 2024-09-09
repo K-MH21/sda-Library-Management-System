@@ -1,25 +1,25 @@
-public class Book : BaseClass
+namespace LibraryManagementSystem
 {
-    private string _title = string.Empty;
-    public string Title
+    public class Book : BaseClass
     {
-        get => _title;
-        set
+        private string _title = string.Empty;
+        public string Title
         {
-            if (string.IsNullOrWhiteSpace(value))
+            get => _title;
+            set
             {
-                throw new ArgumentException("Title cannot be empty");
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Title cannot be empty");
+                }
+                _title = value;
             }
-            _title = value;
+        }
+
+        public Book(string title, DateTime? createdDate = null)
+            : base(ClassType.Book, createdDate)
+        {
+            Title = title;
         }
     }
-
-    public Book(string title, DateTime createdDate)
-        : base(ClassType.Book, createdDate)
-    {
-        Title = title;
-    }
-
-    public Book(string title)
-        : this(title, DateTime.Now) { }
 }

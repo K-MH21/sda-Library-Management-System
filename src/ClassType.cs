@@ -1,5 +1,8 @@
-public enum ClassType
+namespace LibraryManagementSystem
 {
-    User,
-    Book,
+    public enum ClassType
+    {
+        User,
+        Book,
+    }
 }

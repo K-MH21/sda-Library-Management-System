@@ -1,6 +1,7 @@
-﻿internal class Program
+﻿namespace LibraryManagementSystem
 {
-    private static void Main() {
-        
+    internal class Program
+    {
+        private static void Main() { }
     }
 }

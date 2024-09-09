@@ -1,13 +1,16 @@
-public struct ClassTypeMetadata
+namespace LibraryManagementSystem
 {
-    public readonly int BaseId { get; }
-    public readonly int LimitId { get; }
-    public int Counter { get; set; }
-
-    public ClassTypeMetadata(int baseId, int limitId)
+    public struct ClassTypeMetadata
     {
-        BaseId = baseId;
-        LimitId = limitId;
-        Counter = baseId + 1;
+        public int BaseId { get; }
+        public int LimitId { get; }
+        public int Counter { get; set; }
+
+        public ClassTypeMetadata(int baseId, int limitId)
+        {
+            BaseId = baseId;
+            LimitId = limitId;
+            Counter = baseId + 1;
+        }
     }
 }

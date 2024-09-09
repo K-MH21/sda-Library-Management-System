@@ -1,1 +1,4 @@
-public class Library { }
+namespace LibraryManagementSystem
+{
+    public class Library { }
+}
