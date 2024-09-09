@@ -37,9 +37,9 @@ namespace LibraryManagementSystem
             get => _createdDate;
             private set
             {
-                if (value.ToUniversalTime() <= DateTime.UtcNow.AddSeconds(-5))
-                {
-                    throw new ArgumentException("Date cannot be from the past");
+                if (value.ToUniversalTime() >= DateTime.UtcNow.AddMinutes(5))
+                {                               // To make the examples work
+                    throw new ArgumentException("Date cannot be from the future");
                 }
 
                 _createdDate = value;
