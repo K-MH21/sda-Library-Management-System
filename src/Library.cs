@@ -8,15 +8,11 @@ namespace LibraryManagementSystem
         private List<User> usersList = new List<User>();
         private List<Book> booksList = new List<Book>();
 
-        public List<Book> GetAllBooks(int pageNumber, int pageSize)
-        {
-            return GetAllEntity(pageNumber, pageSize, booksList);
-        }
+        public List<Book> GetAllBooks(int pageNumber, int pageSize) =>
+            GetAllEntity(pageNumber, pageSize, booksList);
 
-        public List<User> GetAllUsers(int pageNumber, int pageSize)
-        {
-            return GetAllEntity(pageNumber, pageSize, usersList);
-        }
+        public List<User> GetAllUsers(int pageNumber, int pageSize) =>
+            GetAllEntity(pageNumber, pageSize, usersList);
 
         private List<T> GetAllEntity<T>(int pageNumber, int pageSize, List<T> entityList)
             where T : BaseClass
@@ -32,47 +28,36 @@ namespace LibraryManagementSystem
             return entityList.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         }
 
-        public Book FindBookByTitle(string title)
-        {
-            return FindEntityByString<Book>(title, ClassType.Book);
-        }
+        public Book FindBookByTitle(string title) =>
+            FindEntityByString<Book>(title, ClassType.Book);
 
-        public User FindUserByName(string name)
-        {
-            return FindEntityByString<User>(name, ClassType.User);
-        }
+        public User FindUserByName(string name) => FindEntityByString<User>(name, ClassType.User);
 
         private T FindEntityByString<T>(string str, ClassType type)
             where T : BaseClass
         {
             if (string.IsNullOrEmpty(str))
                 throw new ArgumentException("Empty input");
-            BaseClass entity; // Why `T entity` doesn't work?
+            T? entity;
             switch (type)
             {
                 case ClassType.Book:
-                    entity = booksList.Find(e => e.Title.Equals(str));
+                    entity = booksList.Find(e => e.Title.Equals(str)) as T;
                     break;
                 case ClassType.User:
-                    entity = usersList.Find(e => e.Name.Equals(str));
+                    entity = usersList.Find(e => e.Name.Equals(str)) as T;
                     break;
                 default:
-                    throw new Exception();
+                    throw new InvalidOperationException("Unsupported class type");
             }
             if (entity == null)
                 throw new KeyNotFoundException("Item not found");
-            return (T)entity; // Even here, if I changed the return type to ClassType, it won't work, but "object" return type would work
+            return entity;
         }
 
-        public void AddBook(Book book)
-        {
-            AddEntity(book);
-        }
+        public void AddBook(Book book) => AddEntity(book);
 
-        public void AddUser(User user)
-        {
-            AddEntity(user);
-        }
+        public void AddUser(User user) => AddEntity(user);
 
         private void AddEntity(BaseClass entity)
         {
@@ -99,11 +84,11 @@ namespace LibraryManagementSystem
                     usersList.Add(user);
                     break;
                 default:
-                    throw new Exception();
+                    throw new InvalidOperationException("Unsupported class type");
             }
         }
 
-        // Made them into seperate methods (delete and search by ID) because it very useful
+        // Made them into seperate methods (delete and search by ID) because it is very useful
         // and it could be used later in the third level.
         public Book FindBookById(int id)
         {
@@ -121,26 +106,14 @@ namespace LibraryManagementSystem
             return user;
         }
 
-        public void DeleteBookById(int id)
-        {
-            DeleteBook(FindBookById(id));
-        }
+        public void DeleteBookById(int id) => DeleteBook(FindBookById(id));
 
-        public void DeleteUserById(int id)
-        {
-            DeleteUser(FindUserById(id));
-        }
+        public void DeleteUserById(int id) => DeleteUser(FindUserById(id));
 
         // These two methods beloew were implemented first because I didn't see the "by id".
-        public void DeleteBook(Book book)
-        {
-            DeleteEntity(book);
-        }
+        public void DeleteBook(Book book) => DeleteEntity(book);
 
-        public void DeleteUser(User user)
-        {
-            DeleteEntity(user);
-        }
+        public void DeleteUser(User user) => DeleteEntity(user);
 
         private void DeleteEntity<T>(T entity)
             where T : BaseClass
@@ -161,7 +134,7 @@ namespace LibraryManagementSystem
                         throw new KeyNotFoundException($"{user.Name} not found in the library");
                     break;
                 default:
-                    throw new InvalidOperationException("Unsupported entity type");
+                    throw new InvalidOperationException("Unsupported class type");
             }
         }
     }
