@@ -39,7 +39,7 @@ namespace LibraryManagementSystem
             var book19 = new Book("The Iliad");
             var book20 = new Book("Anna Karenina");
 
-            Library library = new Library();
+            Library library = new Library(new SMSNotificationService());
 
             // Add users to the library
             library.AddUser(user1);
@@ -79,11 +79,14 @@ namespace LibraryManagementSystem
 
                 // This need to be manually tested
                 var booksPage1 = library.GetAllBooks(1, 2);
-                Console.WriteLine($"Page 1, Book 1: {booksPage1[0].Title}");
-                Console.WriteLine($"Page 1, Book 2: {booksPage1[1].Title}");
+                // Console.WriteLine($"Page 1, Book 1: {booksPage1[0].Title}");
+                // Console.WriteLine($"Page 1, Book 2: {booksPage1[1].Title}");
+                Console.WriteLine(booksPage1[0].Title == book1.Title);
+                Console.WriteLine(booksPage1[1].Title == book2.Title);
 
                 var booksPage2 = library.GetAllBooks(2, 2);
-                Console.WriteLine($"Page 2, Book 1: {booksPage2[0].Title}");
+                // Console.WriteLine($"Page 2, Book 1: {booksPage2[0].Title}");
+                Console.WriteLine(booksPage2[0].Title == book3.Title);
 
                 // Test out-of-range page
                 try
@@ -98,7 +101,7 @@ namespace LibraryManagementSystem
                 // Test empty list
                 try
                 {
-                    new Library().GetAllUsers(1, 1);
+                    new Library(new EmailNotificationService()).GetAllUsers(1, 1);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -141,7 +144,7 @@ namespace LibraryManagementSystem
             }
             {
                 // Test add and delete methods
-                Library library1 = new Library();
+                Library library1 = new Library(new EmailNotificationService());
 
                 var newBook = new Book("b1");
                 library1.AddBook(newBook);

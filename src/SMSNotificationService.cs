@@ -7,31 +7,31 @@ namespace LibraryManagementSystem
     {
         public bool SendNotificationOnFailure(string str, DataTypeAttribute phoneNumber)
         {
-            switch (new Random().Next(0, 2))
+            switch (new Random().Next(0, 5))
             {
-                case 0:
-                    string content = $"Book {str} added to Library. Thank you!";
+                case 0: // 25% of failure
+                    Console.WriteLine($"SMS failed to reach to {phoneNumber.ToString}");
+                    return false;
+                default:
+                    string content = $"{str}";
                     Console.WriteLine($"SMS sent to {phoneNumber.ToString}");
                     Console.WriteLine($"SMS Content:\n{content}");
                     return true;
-                default:
-                    Console.WriteLine($"SMS failed to reach to {phoneNumber.ToString}");
-                    return false;
             }
         }
 
         public bool SendNotificationOnSuccess(string str, DataTypeAttribute phoneNumber)
         {
-            switch (new Random().Next(0, 2))
+            switch (new Random().Next(0, 5))
             {
                 case 0:
-                    string content = $"Error adding User {str}. Please email support@library.com.";
+                    Console.WriteLine($"SMS failed to reach to {phoneNumber.ToString}");
+                    return false;
+                default:
+                    string content = $"{str}";
                     Console.WriteLine($"SMS sent to {phoneNumber.ToString}");
                     Console.WriteLine($"SMS Content:\n{content}");
                     return true;
-                default:
-                    Console.WriteLine($"SMS failed to reach to {phoneNumber.ToString}");
-                    return false;
             }
         }
     }
