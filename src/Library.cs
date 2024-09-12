@@ -74,43 +74,50 @@ namespace LibraryManagementSystem
                     Book book = entity as Book;
                     if (booksList.Any(e => e.Title.Equals(book.Title)))
                     {
-                        string bookFailMessage = $"We encountered an issue adding {book.Title}.";
                         _notificationService.SendNotificationOnFailure(
-                            bookFailMessage,
+                            $"We encountered an issue adding {book.Title}.",
                             new DataTypeAttribute(DataType.Text)
                         );
                         throw new InvalidOperationException(
                             $"{book.Title} is already in the library"
                         );
                     }
+
+                    if ( // if message failed to reach
+                        !_notificationService.SendNotificationOnSuccess(
+                            $"A new book titled {book.Title} has been added to the Library.",
+                            new DataTypeAttribute(DataType.Text)
+                        )
+                    )
+                    {
+                        Console.WriteLine("The book hasen't been added to the system");
+                        return;
+                    }
                     booksList.Add(book);
-                    string bookSeccessMessage =
-                        $"A new book titled {book.Title} has been added to the Library.";
-                    _notificationService.SendNotificationOnSuccess(
-                        bookSeccessMessage,
-                        new DataTypeAttribute(DataType.Text)
-                    );
                     break;
                 case ClassType.User:
                     User user = entity as User;
                     if (usersList.Any(e => e.Name.Equals(user.Name)))
                     {
-                        string userFailMessage =
-                            $"We encountered an issue creating account for {user.Name}.";
                         _notificationService.SendNotificationOnFailure(
-                            userFailMessage,
+                            $"We encountered an issue creating account for {user.Name}.",
                             new DataTypeAttribute(DataType.Text)
                         );
                         throw new InvalidOperationException(
                             $"{user.Name} is already in the library"
                         );
                     }
+                    if ( // if message failed to reach
+                        !_notificationService.SendNotificationOnSuccess(
+                            $"Welcome {user.Name}!",
+                            new DataTypeAttribute(DataType.Text)
+                        )
+                    )
+                    {
+                        Console.WriteLine("The user hasn't been added to the system");
+                        return;
+                    }
                     usersList.Add(user);
-                    string userSeccessMessage = $"Welcome {user.Name}!";
-                    _notificationService.SendNotificationOnSuccess(
-                        userSeccessMessage,
-                        new DataTypeAttribute(DataType.Text)
-                    );
                     break;
                 default:
                     throw new InvalidOperationException("Unsupported class type");
@@ -156,36 +163,45 @@ namespace LibraryManagementSystem
                     var book = entity as Book;
                     if (!booksList.Remove(book))
                     {
-                        string bookFailMessage = $"We encountered an issue deleting {book.Title}.";
                         _notificationService.SendNotificationOnFailure(
-                            bookFailMessage,
+                            $"We encountered an issue deleting {book.Title}.",
                             new DataTypeAttribute(DataType.Text)
                         );
                         throw new KeyNotFoundException($"{book.Title} not found in the library");
                     }
-                    string bookSeccessMessage = $"Book titled {book.Title} has been deleted.";
-                    _notificationService.SendNotificationOnSuccess(
-                        bookSeccessMessage,
-                        new DataTypeAttribute(DataType.Text)
-                    );
+
+                    if ( // if message failed to reach
+                        !_notificationService.SendNotificationOnSuccess(
+                            $"Book titled {book.Title} has been deleted.",
+                            new DataTypeAttribute(DataType.Text)
+                        )
+                    )
+                    {
+                        booksList.Add(book);
+                        Console.WriteLine("The book has been added back to the store");
+                    }
                     break;
                 case ClassType.User:
                     var user = entity as User;
                     if (!usersList.Remove(user))
                     {
-                        string userFailMessage =
-                            $"We encountered an issue creating account for {user.Name}.";
                         _notificationService.SendNotificationOnFailure(
-                            userFailMessage,
+                            $"We encountered an issue creating account for {user.Name}.",
                             new DataTypeAttribute(DataType.Text)
                         );
                         throw new KeyNotFoundException($"{user.Name} not found in the library");
                     }
-                    string userSeccessMessage = $"Goodbuy {user.Name} 🥲";
-                    _notificationService.SendNotificationOnSuccess(
-                        userSeccessMessage,
-                        new DataTypeAttribute(DataType.Text)
-                    );
+
+                    if ( // if message failed to reach
+                        !_notificationService.SendNotificationOnSuccess(
+                            $"Goodbuy {user.Name} 🥲",
+                            new DataTypeAttribute(DataType.Text)
+                        )
+                    )
+                    {
+                        usersList.Add(user);
+                        Console.WriteLine("The user has been added back to the store");
+                    }
                     break;
                 default:
                     throw new InvalidOperationException("Unsupported class type");
